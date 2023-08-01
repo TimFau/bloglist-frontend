@@ -1,3 +1,9 @@
+@import './blogs.scss';
+
+.bold {
+    font-weight: bold;
+}
+
 .error,
 .success {
     border: 3px solid red;
@@ -52,14 +58,4 @@ button:hover {
 
 .toggle-wrapper div + div {
     display: flex; justify-content: space-between;
-}
-
-.blog-item {
-    padding: 10px;
-    border-bottom: 1px solid white;
-}
-
-.blog-item span {
-    display: block;
-    padding: 5px 0;
 }

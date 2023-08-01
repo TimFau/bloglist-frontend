@@ -4,7 +4,7 @@ import CreateBlog from './components/CreateBlog'
 import ToggleWrapper from './components/ToggleWrapper'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import './css/main.css'
+import './styles/main.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -140,7 +140,6 @@ const App = () => {
 
   return (
     <div>
-        <h2>Blogs</h2>
         {errorMessages.map(errorMessage => (
           <p className="error">{errorMessage}</p>
         ))}
@@ -161,11 +160,10 @@ const App = () => {
           />
         </ToggleWrapper>
 
-        <div className="container">
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
-          )}
-        </div>
+        <h2>Blogs</h2>
+        {blogs.map(blog =>
+          <Blog key={blog.id} blog={blog} />
+        )}
     </div>
   )
 }
