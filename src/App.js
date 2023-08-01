@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
+import CreateBlog from './components/CreateBlog'
+import ToggleWrapper from './components/ToggleWrapper'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './css/main.css'
@@ -11,9 +13,9 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [errorMessages, setErrorMessages] = useState([])
   const [successMessage, setSuccessMessage] = useState(null)
-  const [createdTitle, setCreatedTitle] = useState('')
-  const [createdAuthor, setCreatedAuthor] = useState('')
-  const [createdUrl, setCreatedUrl] = useState('')
+  const [blogAddSuccess, setBlogAddSuccess] = useState(false)
+
+  const createBlogRef = useRef()
 
   useEffect(() => {
     let lsUser = localStorage.getItem('user')
@@ -55,27 +57,23 @@ const App = () => {
     localStorage.removeItem('user')
   }
 
-  const handleCreateBlog = async (event) => {
-    event.preventDefault()
-
+  const handleCreateBlog = async (title, author, url) => {
     try {
       const newBlog = await blogService.create(
-        { 
-          title: createdTitle,
-          author: createdAuthor,
-          url: createdUrl
-        },
+        { title, author, url },
         user.token
       )
 
       const response = newBlog.response
-      if (newBlog.response && newBlog.response.data.errors) {
-        const errors = newBlog.response.data.errors
+      if (response && response.data.errors) {
+        const errors = response.data.errors
         const errorMessages = Object.values(errors).map(error => error.message)
         handleSetErrorMessages(errorMessages)
       } else {
         handleSetSuccessMessage(`Blog "${newBlog.title}" by ${newBlog.author} added`)
         getBlogs()
+        createBlogRef.current()
+        setBlogAddSuccess(true)
       }
     } catch (exception) {
       handleSetErrorMessages(['Error creating blog.'])
@@ -113,7 +111,7 @@ const App = () => {
         {successMessage && 
           <p className="success">{successMessage}</p>
         }
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleLogin} className="container">
           <div className="input-wrap">
             <label htmlFor="username">Username</label>
             <input
@@ -149,45 +147,25 @@ const App = () => {
         {successMessage && 
           <p className="success">{successMessage}</p>
         }
-        <p>{user.name} logged in</p> <button type="button" onClick={handleLogout}>Logout</button>
-        <h3>Create New blog</h3>
-        <form onSubmit={handleCreateBlog}>
-          <div className="input-wrap">
-            <label htmlFor="title">Title</label>
-            <input
-              id="title"
-              type="text"
-              value={createdTitle}
-              name="Title"
-              onChange={({ target }) => setCreatedTitle(target.value)}
-            ></input>
-          </div>
-          <div className="input-wrap">
-            <label htmlFor="author">Author</label>
-            <input
-              id="author"
-              type="text"
-              value={createdAuthor}
-              name="Author"
-              onChange={({ target }) => setCreatedAuthor(target.value)}
-            ></input>
-          </div>
-          <div className="input-wrap">
-            <label htmlFor="url">URL</label>
-            <input
-              id="url"
-              type="text"
-              value={createdUrl}
-              name="URL"
-              onChange={({ target }) => setCreatedUrl(target.value)}
-            ></input>
-          </div>
-          <button type="submit">Create</button>
-        </form>
+        <div className="container user-info">
+          <p>{user.name} logged in</p> <button type="button" onClick={handleLogout}>Logout</button>
+        </div>
+        <ToggleWrapper
+          buttonLabel="Create a new blog"
+          ref={createBlogRef}
+        >
+          <CreateBlog
+            handleCreateBlog={handleCreateBlog}
+            blogAddSuccess={blogAddSuccess}
+            setBlogAddSuccess={setBlogAddSuccess}
+          />
+        </ToggleWrapper>
 
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-        )}
+        <div className="container">
+          {blogs.map(blog =>
+            <Blog key={blog.id} blog={blog} />
+          )}
+        </div>
     </div>
   )
 }

@@ -38,3 +38,28 @@ button:hover {
     background: #202020;
     border-color: #202020;
 }
+
+.container {
+    padding: 15px;
+    background: #eee;
+    margin-bottom: 15px;
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.toggle-wrapper div + div {
+    display: flex; justify-content: space-between;
+}
+
+.blog-item {
+    padding: 10px;
+    border-bottom: 1px solid white;
+}
+
+.blog-item span {
+    display: block;
+    padding: 5px 0;
+}
