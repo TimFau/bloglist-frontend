@@ -37,6 +37,11 @@ button {
     color: #fff;
     border-color: #000;
     font-weight: bold;
+    &.button-inline {
+        height: auto;
+        min-width: auto;
+        margin-left: 10px;
+    }
 }
 
 button:hover {

@@ -20,5 +20,22 @@ const create = async (params, token) => {
   }
 }
 
+const incrementLikes = async (params) => {
+  const body = {
+    user: params.user.id,
+    likes: params.likes + 1,
+    author: params.author,
+    title: params.title,
+    url: params.url
+  }
+
+  try {
+    const response = await axios.post(`${baseUrl}/${params.id}`, body)
+    return response.data
+  } catch (exception) {
+    console.log('exception', exception)
+  }
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create }
+export default { getAll, create, incrementLikes }
