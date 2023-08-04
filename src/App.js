@@ -88,6 +88,24 @@ const App = () => {
     }
   }
 
+  const handleDeleteBlog = async (params) => {
+    try {
+      const confirmDelete = window.confirm(`Are you sure you want to delete ${params.name} by ${params.author}?`)
+      if (confirmDelete) {
+        const deletedBlog = await blogService.deleteBlog(params.id, user.token)
+        if (deletedBlog.code === 'ERR_BAD_REQUEST') {
+          const error = deletedBlog.response.data.error
+          handleSetErrorMessages(error)
+          return false
+        }
+        handleSetSuccessMessage('Blog Deleted.')
+        getBlogs()
+      }
+    } catch {
+      console.log('Error deleting blog.')
+    }
+  }
+
   const handleResetMessages = () => {
     setErrorMessages([])
     setSuccessMessage(null)
@@ -95,7 +113,7 @@ const App = () => {
 
   const handleSetErrorMessages = (messages) => {
     handleResetMessages()
-    setErrorMessages(messages)
+    setErrorMessages(typeof messages === "string" ? [messages] : messages)
     setTimeout(() => {
       handleResetMessages()
     }, 5000)
@@ -170,7 +188,7 @@ const App = () => {
 
         <h2>Blogs</h2>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} handleDeleteBlog={handleDeleteBlog} />
         )}
     </div>
   )

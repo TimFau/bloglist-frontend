@@ -1,7 +1,7 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
 
-const Blog = ({blog}) => {
+const Blog = ({blog, handleDeleteBlog}) => {
   const [showMoreInfo, setShowMoreInfo] = useState(false)
   const [currentBlog, setCurrentBlog] = useState(blog)
 
@@ -25,6 +25,7 @@ const Blog = ({blog}) => {
         <a href={blog.url}>{blog.url}</a>
         <span>Likes: {currentBlog.likes} <button className="button-inline" onClick={handleIncrementLikes}>like</button></span>
         <span>{blog.user.username}</span>
+        <button onClick={() => handleDeleteBlog(blog)}>Delete</button>
       </div>
     </div>  
   )

@@ -20,6 +20,20 @@ const create = async (params, token) => {
   }
 }
 
+const deleteBlog = async (blogId, token) => {
+  console.log('delete blog', blogId)
+  const config = {
+    headers: { Authorization: `bearer ${token}` }
+  }
+  try {
+    const response = await axios.delete(`${baseUrl}/${blogId}`, config)
+    return response.data
+  } catch (exception) {
+    console.log('exception', exception)
+    return exception
+  }
+}
+
 const incrementLikes = async (params) => {
   const body = {
     user: params.user.id,
@@ -38,4 +52,4 @@ const incrementLikes = async (params) => {
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, incrementLikes }
+export default { getAll, create, deleteBlog, incrementLikes }
