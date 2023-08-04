@@ -28,9 +28,17 @@ const App = () => {
     }
   }, [user])
 
+  const sortBlogsByLikes = (blogs) => {
+    const sortedBlogs = blogs.toSorted((a, b) => {
+      return b.likes - a.likes
+    }
+    )
+    return sortedBlogs
+  }
+
   const getBlogs = () => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs( sortBlogsByLikes(blogs) )
     ) 
   }
 
