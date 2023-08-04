@@ -39,14 +39,14 @@ const App = () => {
   const getBlogs = () => {
     blogService.getAll().then(blogs =>
       setBlogs( sortBlogsByLikes(blogs) )
-    ) 
+    )
   }
 
   const handleLogin = async (event) => {
     event.preventDefault()
 
     try {
-      const user = await loginService.login({username, password})
+      const user = await loginService.login({ username, password })
       setUser(user)
       // console.log(user)
       setUsername('')
@@ -101,8 +101,8 @@ const App = () => {
         handleSetSuccessMessage('Blog Deleted.')
         getBlogs()
       }
-    } catch {
-      console.log('Error deleting blog.')
+    } catch (excetion) {
+      console.log('Error deleting blog.', excetion)
     }
   }
 
@@ -113,7 +113,7 @@ const App = () => {
 
   const handleSetErrorMessages = (messages) => {
     handleResetMessages()
-    setErrorMessages(typeof messages === "string" ? [messages] : messages)
+    setErrorMessages(typeof messages === 'string' ? [messages] : messages)
     setTimeout(() => {
       handleResetMessages()
     }, 5000)
@@ -127,14 +127,14 @@ const App = () => {
     }, 5000)
   }
 
-  if (user == null) {
+  if (user === null) {
     return (
       <div>
         <h2>Log in</h2>
-        {errorMessages.map(errorMessage => (
-          <p className="error">{errorMessage}</p>
+        {errorMessages.map((errorMessage, index) => (
+          <p className="error" key={index}>{errorMessage}</p>
         ))}
-        {successMessage && 
+        {successMessage &&
           <p className="success">{successMessage}</p>
         }
         <form onSubmit={handleLogin} className="container">
@@ -166,30 +166,30 @@ const App = () => {
 
   return (
     <div>
-        {errorMessages.map(errorMessage => (
-          <p className="error">{errorMessage}</p>
-        ))}
-        {successMessage && 
+      {errorMessages.map((errorMessage, index) => (
+        <p className="error" key={index}>{errorMessage}</p>
+      ))}
+      {successMessage &&
           <p className="success">{successMessage}</p>
-        }
-        <div className="container user-info">
-          <p>{user.name} logged in</p> <button type="button" onClick={handleLogout}>Logout</button>
-        </div>
-        <ToggleWrapper
-          buttonLabel="Create a new blog"
-          ref={createBlogRef}
-        >
-          <CreateBlog
-            handleCreateBlog={handleCreateBlog}
-            blogAddSuccess={blogAddSuccess}
-            setBlogAddSuccess={setBlogAddSuccess}
-          />
-        </ToggleWrapper>
+      }
+      <div className="container user-info">
+        <p>{user.name} logged in</p> <button type="button" onClick={handleLogout}>Logout</button>
+      </div>
+      <ToggleWrapper
+        buttonLabel="Create a new blog"
+        ref={createBlogRef}
+      >
+        <CreateBlog
+          handleCreateBlog={handleCreateBlog}
+          blogAddSuccess={blogAddSuccess}
+          setBlogAddSuccess={setBlogAddSuccess}
+        />
+      </ToggleWrapper>
 
-        <h2>Blogs</h2>
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} usersUsername={user.username} handleDeleteBlog={handleDeleteBlog} />
-        )}
+      <h2>Blogs</h2>
+      {blogs.map(blog =>
+        <Blog key={blog.id} blog={blog} usersUsername={user.username} handleDeleteBlog={handleDeleteBlog} />
+      )}
     </div>
   )
 }
