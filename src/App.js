@@ -106,6 +106,11 @@ const App = () => {
     }
   }
 
+  const handleIncrementLikes = async (blog) => {
+    const updatedBlog = await blogService.incrementLikes(blog)
+    return updatedBlog
+  }
+
   const handleResetMessages = () => {
     setErrorMessages([])
     setSuccessMessage(null)
@@ -188,7 +193,13 @@ const App = () => {
 
       <h2>Blogs</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} usersUsername={user.username} handleDeleteBlog={handleDeleteBlog} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          usersUsername={user.username}
+          handleDeleteBlog={handleDeleteBlog}
+          handleIncrementLikes={handleIncrementLikes}
+        />
       )}
     </div>
   )
