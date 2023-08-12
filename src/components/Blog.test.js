@@ -62,3 +62,28 @@ test('renders url and likes after clicking "view more"', async () => {
   expect(container).toHaveTextContent(blog.url)
   expect(container).toHaveTextContent(blog.likes)
 })
+
+test('if "like" button is clicked twice, "handleIncrementLikes" is run twice', async () => {
+
+  const mockHandler = jest.fn()
+
+  const { container } = render(
+    <Blog
+      blog={blog}
+      usersUsername='Test User'
+      handleDeleteBlog={() => {}}
+      handleIncrementLikes={mockHandler}
+    />
+  )
+  const user = userEvent.setup()
+  const button = screen.getByRole('button')
+  await user.click(button)
+
+  expect(container).toBeDefined()
+
+  const likeButton = screen.getByTitle('Increment Likes')
+  await user.click(likeButton)
+  await user.click(likeButton)
+
+  expect(mockHandler.mock.calls).toHaveLength(2)
+})
