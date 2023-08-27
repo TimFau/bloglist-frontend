@@ -18,7 +18,7 @@ const ToggleWrapper = forwardRef((props, refs) => {
   return (
     <div className="toggle-wrapper container">
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisible}>{props.buttonLabel}</button>
+        <button onClick={toggleVisible} id="openCreateBlogButton">{props.buttonLabel}</button>
       </div>
       <div style={showWhenVisible}>
         {props.children}
@@ -31,7 +31,8 @@ const ToggleWrapper = forwardRef((props, refs) => {
 ToggleWrapper.displayName = 'ToggleWrapper'
 
 ToggleWrapper.propTypes = {
-  buttonLabel: PropTypes.string.isRequired
+  buttonLabel: PropTypes.string.isRequired,
+  id: PropTypes.string
 }
 
 export default ToggleWrapper

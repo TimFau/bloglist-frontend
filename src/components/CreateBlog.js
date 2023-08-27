@@ -32,7 +32,7 @@ const CreateBlog = (props) => {
         <div className="input-wrap">
           <label htmlFor="title">Title</label>
           <input
-            id="title"
+            id="createBlogTitle"
             type="text"
             value={title}
             name="Title"
@@ -42,7 +42,7 @@ const CreateBlog = (props) => {
         <div className="input-wrap">
           <label htmlFor="author">Author</label>
           <input
-            id="author"
+            id="createBlogAuthor"
             type="text"
             value={author}
             name="Author"
@@ -52,14 +52,14 @@ const CreateBlog = (props) => {
         <div className="input-wrap">
           <label htmlFor="url">URL</label>
           <input
-            id="url"
+            id="createBlogUrl"
             type="text"
             value={url}
             name="URL"
             onChange={({ target }) => setUrl(target.value)}
           ></input>
         </div>
-        <button type="submit">Create</button>
+        <button type="submit" id="submitCreateBlogButton">Create</button>
       </form>
     </div>
   )
