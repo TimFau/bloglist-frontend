@@ -8,3 +8,6 @@
   .blog-item span {
     display: block;
     padding: 5px 0; }
+    .blog-item span .current-likes {
+      display: inline-block;
+      padding: 0; }

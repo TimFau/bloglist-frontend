@@ -34,6 +34,9 @@ describe('Blog app', function () {
   })
 
   describe('When logged in', function () {
+    const blogName = 'TestBlog'
+    const blogAuthor = 'Test Man'
+    const blogUrl = 'https://google.com'
     // Log in user
     beforeEach(function () {
       cy.get('#username').type(username)
@@ -43,9 +46,6 @@ describe('Blog app', function () {
     })
 
     it('A blog can be created', function  () {
-      const blogName = 'TestBlog'
-      const blogAuthor = 'Test Man'
-      const blogUrl = 'https://google.com'
       cy.get('#openCreateBlogButton').click()
       cy.get('#createBlogTitle').type(blogName)
       cy.get('#createBlogAuthor').type(blogAuthor)
@@ -55,5 +55,29 @@ describe('Blog app', function () {
       cy.get('.blog-list-wrapper').contains(blogName)
       cy.get('.blog-list-wrapper').contains(blogAuthor)
     })
+
+    describe('and a blog exists', function () {
+      beforeEach(function () {
+        cy.get('#openCreateBlogButton').click()
+        cy.get('#createBlogTitle').type(blogName)
+        cy.get('#createBlogAuthor').type(blogAuthor)
+        cy.get('#createBlogUrl').type(blogUrl)
+        cy.get('#submitCreateBlogButton').click()
+        cy.contains(`Blog "${blogName}" by ${blogAuthor} added`)
+      })
+      it('A blog can be liked', function () {
+        let likesBefore = undefined
+        cy.get('.toggle-view-more-button').click()
+        cy.get('.likes-count').then(function ($currentLikes) {
+          likesBefore = parseInt($currentLikes.text())
+        })
+        cy.get('.increment-likes-button').click()
+        cy.get('.likes-count').should(function ($currentLikes) {
+          const likesAfter = parseInt($currentLikes.text())
+          expect(likesAfter).to.equal(likesBefore + 1)
+        })
+      })
+    })
+
   })
 })

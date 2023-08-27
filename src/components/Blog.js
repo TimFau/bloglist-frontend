@@ -25,12 +25,12 @@ const Blog = ({ blog, usersUsername, handleDeleteBlog, handleIncrementLikes }) =
           <span className="bold">{blog.title}</span>
           <span>{blog.author}</span>
         </div>
-        <button onClick={() => setShowMoreInfo(!showMoreInfo)}>{showMoreInfo ? 'Hide' : 'View'}</button>
+        <button onClick={() => setShowMoreInfo(!showMoreInfo)} className="toggle-view-more-button">{showMoreInfo ? 'Hide' : 'View'}</button>
       </div>
       {displayMoreInfo &&
         <div className="more-info">
           <a href={blog.url}>{blog.url}</a>
-          <span>Likes: {currentLikes} <button className="button-inline" title="Increment Likes" onClick={incrementLikes}>like</button></span>
+          <span>Likes: <span className="likes-count">{currentLikes}</span> <button className="button-inline increment-likes-button" title="Increment Likes" onClick={incrementLikes}>like</button></span>
           <span>{blog.user.username}</span>
           {blog.user.username === usersUsername &&
             <button onClick={() => handleDeleteBlog(blog)}>Delete</button>

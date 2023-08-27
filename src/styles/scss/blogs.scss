@@ -9,5 +9,9 @@
     span {
         display: block;
         padding: 5px 0;
+        .current-likes {
+            display: inline-block;
+            padding: 0;
+        }
     }
 }
