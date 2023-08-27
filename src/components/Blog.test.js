@@ -3,6 +3,7 @@ import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
+import CreateBlog from './CreateBlog'
 
 // Test Data
 const blog = {
@@ -86,4 +87,41 @@ test('if "like" button is clicked twice, "handleIncrementLikes" is run twice', a
   await user.click(likeButton)
 
   expect(mockHandler.mock.calls).toHaveLength(2)
+})
+
+test('New blog form calls event handler with correct details', async () => {
+  const handleCreateBlog = jest.fn()
+
+  const { container } = render(
+    <CreateBlog
+      handleCreateBlog={handleCreateBlog}
+      blogAddSuccess={false}
+      setBlogAddSuccess={() => {}}
+    />
+  )
+
+  const user = userEvent.setup()
+  const button = screen.getByRole('button')
+  const titleInput = screen.getByLabelText('Title')
+  const authorInput = screen.getByLabelText('Author')
+  const urlInput = screen.getByLabelText('URL')
+  const titleValue = 'TestTitle'
+  const authorValue = 'TestAuthor'
+  const urlValue = 'https://google.com'
+
+  // Enter the Inputs with Value
+  await user.type(titleInput, titleValue)
+  await user.type(authorInput, authorValue)
+  await user.type(urlInput, urlValue)
+
+  // Click the button to submit the form
+  await user.click(button)
+
+  // Confirm that form calls 'handleCreateBlog' with the correct details
+  expect(container).toBeDefined()
+  expect(handleCreateBlog.mock.calls[0]).toHaveLength(3)
+  expect(handleCreateBlog.mock.calls[0][0]).toBe(titleValue)
+  expect(handleCreateBlog.mock.calls[0][1]).toBe(authorValue)
+  expect(handleCreateBlog.mock.calls[0][2]).toBe(urlValue)
+
 })
