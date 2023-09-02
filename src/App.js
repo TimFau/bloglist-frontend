@@ -29,11 +29,17 @@ const App = () => {
   }, [user])
 
   const sortBlogsByLikes = (blogs) => {
-    const sortedBlogs = blogs.toSorted((a, b) => {
-      return b.likes - a.likes
+    try {
+      // Note: toSorted will return an error in electron and some other browsers
+      const sortedBlogs = blogs.toSorted((a, b) => {
+        return b.likes - a.likes
+      }
+      )
+      return sortedBlogs
+    } catch (error) {
+      console.error('sortedBlogs error: ', error)
+      return blogs
     }
-    )
-    return sortedBlogs
   }
 
   const getBlogs = () => {

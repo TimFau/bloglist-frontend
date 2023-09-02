@@ -17,6 +17,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "cypress:open": "cypress open",
+    "test:e2e": "cypress run",
     "sass": "node-sass --watch src/styles/scss -o src/styles",
     "eslint": "eslint .",
     "eslint:fix": "eslint --fix --ext .js,.jsx ."
