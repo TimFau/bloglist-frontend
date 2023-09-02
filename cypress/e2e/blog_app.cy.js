@@ -77,6 +77,17 @@ describe('Blog app', function () {
           expect(likesAfter).to.equal(likesBefore + 1)
         })
       })
+
+      it('A user can delete a blog they created', function () {
+        cy.get('.users-blog .blog-info span').then(function ($blogTitle) {
+          // Get text from '.blog-info > span' and assigne value to 'foundBlogTitle'
+          const foundBlogTitle = $blogTitle.text()
+
+          cy.get('.users-blog .toggle-view-more-button').click()
+          cy.get('.users-blog .delete-button').click()
+          cy.get('.blog-list-wrapper').contains(foundBlogTitle).should('not.exist')
+        })
+      })
     })
 
   })

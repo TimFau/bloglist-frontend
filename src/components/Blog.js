@@ -17,9 +17,10 @@ const Blog = ({ blog, usersUsername, handleDeleteBlog, handleIncrementLikes }) =
   }
 
   const currentLikes = currentBlog && currentBlog.likes || blog.likes // fix for react-testing-library
+  const isUsersBlog = blog.user.username === usersUsername
 
   return (
-    <div className="blog-item container">
+    <div className={`blog-item container ${isUsersBlog ? 'users-blog' : ''}`}>
       <div className="top-wrapper">
         <div className="blog-info">
           <span className="bold">{blog.title}</span>
@@ -32,8 +33,8 @@ const Blog = ({ blog, usersUsername, handleDeleteBlog, handleIncrementLikes }) =
           <a href={blog.url}>{blog.url}</a>
           <span>Likes: <span className="likes-count">{currentLikes}</span> <button className="button-inline increment-likes-button" title="Increment Likes" onClick={incrementLikes}>like</button></span>
           <span>{blog.user.username}</span>
-          {blog.user.username === usersUsername &&
-            <button onClick={() => handleDeleteBlog(blog)}>Delete</button>
+          {isUsersBlog &&
+            <button onClick={() => handleDeleteBlog(blog)} className="delete-button">Delete</button>
           }
         </div>
       }
